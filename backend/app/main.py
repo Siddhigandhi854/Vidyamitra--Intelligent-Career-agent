@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import auth, resume, quiz, training, interview, jobs, progress, media, token_utils
+try:
+    from app.routers import auth, resume, quiz, training, interview, jobs, progress, media, token_utils
+except ImportError:
+    # Fallback for different directory structures
+    from routers import auth, resume, quiz, training, interview, jobs, progress, media, token_utils
 
 
 app = FastAPI(
