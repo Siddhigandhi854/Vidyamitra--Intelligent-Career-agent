@@ -3,16 +3,17 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
-import { Login } from "../pages/Auth/Login";
+import { LoginModern } from "../pages/Auth/LoginModern";
 import { Register } from "../pages/Auth/Register";
 import { TestAuth } from "../pages/Auth/TestAuth";
-import { Dashboard } from "../pages/Dashboard/Dashboard";
-import { ResumeUpload } from "../pages/Resume/ResumeUpload";
+import { TestUI } from "../pages/TestUI";
+import { DashboardSimple } from "../pages/Dashboard/DashboardSimple";
+import { ResumeUploadModern } from "../pages/Resume/ResumeUploadModern";
 import { JobRoles } from "../pages/Jobs/JobRoles";
 import { TrainingPlan } from "../pages/Training/TrainingPlan";
 import { QuizModule } from "../pages/Quiz/QuizModule";
 import { MockInterview } from "../pages/Interview/MockInterview";
-import { ProgressOverview } from "../pages/Progress/ProgressOverview";
+import { ProgressReal } from "../pages/Progress/ProgressReal";
 
 const RequireAuth: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const { user, loading } = useAuth();
@@ -53,7 +54,7 @@ export const AppRouter: React.FC = () => {
         path="/login"
         element={
           <PublicRoute>
-            <Login />
+            <LoginModern />
           </PublicRoute>
         }
       />
@@ -66,6 +67,7 @@ export const AppRouter: React.FC = () => {
         }
       />
       <Route path="/test-auth" element={<TestAuth />} />
+      <Route path="/test-ui" element={<TestUI />} />
 
       {/* Protected routes */}
       <Route
@@ -76,13 +78,13 @@ export const AppRouter: React.FC = () => {
           </RequireAuth>
         }
       >
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="resume" element={<ResumeUpload />} />
+        <Route path="dashboard" element={<DashboardSimple />} />
+        <Route path="resume" element={<ResumeUploadModern />} />
         <Route path="roles" element={<JobRoles />} />
         <Route path="training" element={<TrainingPlan />} />
         <Route path="quiz" element={<QuizModule />} />
         <Route path="interview" element={<MockInterview />} />
-        <Route path="progress" element={<ProgressOverview />} />
+        <Route path="progress" element={<ProgressReal />} />
       </Route>
 
       {/* Catch all route */}
