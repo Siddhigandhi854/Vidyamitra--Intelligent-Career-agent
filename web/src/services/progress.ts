@@ -1,12 +1,32 @@
 import api from "./api";
 
 export async function fetchProgressOverview() {
-  const { data } = await api.get("/progress/overview");
-  return data;
+  try {
+    const url = '/progress/overview';
+    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
+    console.log('🌐 Full progress overview URL:', fullUrl);
+    
+    const { data } = await api.get(url);
+    console.log('✅ Progress overview fetched:', data);
+    return data;
+  } catch (error: any) {
+    console.error('❌ Progress overview fetch failed:', error);
+    throw error;
+  }
 }
 
 export async function fetchProgressTimeline() {
-  const { data } = await api.get("/progress/timeline");
-  return data;
+  try {
+    const url = '/progress/timeline';
+    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
+    console.log('🌐 Full progress timeline URL:', fullUrl);
+    
+    const { data } = await api.get(url);
+    console.log('✅ Progress timeline fetched:', data);
+    return data;
+  } catch (error: any) {
+    console.error('❌ Progress timeline fetch failed:', error);
+    throw error;
+  }
 }
 

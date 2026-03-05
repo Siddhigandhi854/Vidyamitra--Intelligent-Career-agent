@@ -27,10 +27,15 @@ export async function fetchTrainingPlan(targetRole?: string) {
   };
 
   try {
-    const { data } = await api.post("/training/generate-plan", request);
+    const url = '/training/generate-plan';
+    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
+    console.log('🌐 Full training plan URL:', fullUrl);
+    
+    const { data } = await api.post(url, request);
+    console.log('✅ Training plan generated:', data);
     return data;
   } catch (error: any) {
-    console.error("Training plan generation failed:", error);
+    console.error('❌ Training plan generation failed:', error);
     // Return fallback plan
     return {
       plan_id: `${userEmail}_fallback`,

@@ -47,7 +47,17 @@ export async function fetchInterviewSession() {
 }
 
 export async function submitInterviewFeedback(payload: { session_id: string; notes: string }) {
-  const { data } = await api.post("/interview/feedback", payload);
-  return data;
+  try {
+    const url = '/interview/feedback';
+    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
+    console.log('🌐 Full interview feedback URL:', fullUrl);
+    
+    const { data } = await api.post(url, payload);
+    console.log('✅ Interview feedback submitted:', data);
+    return data;
+  } catch (error: any) {
+    console.error('❌ Interview feedback submission failed:', error);
+    throw error;
+  }
 }
 
