@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { AuthUser, AuthContextType } from '../lib/supabase'
-import { registerUser, loginUser, testApiConnection } from '../services/authEnhanced'
+import { registerUser, loginUser } from '../services/auth'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -21,18 +21,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Test API connection first
-    const testConnection = async () => {
-      try {
-        const isConnected = await testApiConnection();
-        console.log('🌐 API Connection Test Result:', isConnected);
-      } catch (error) {
-        console.error('❌ API Connection Test Failed:', error);
-      }
-    };
-
-    testConnection();
-
     // Check for stored token on mount
     const checkAuth = () => {
       try {
