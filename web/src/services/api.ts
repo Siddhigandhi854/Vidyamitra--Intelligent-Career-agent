@@ -9,13 +9,36 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.set('Authorization', `Bearer ${token}`);
   }
+  // Add debugging
+  console.log('🔍 API Request:', {
+    method: config.method,
+    url: (config.baseURL || '') + (config.url || ''),
+    headers: config.headers,
+    baseURL: config.baseURL,
+    fullURL: (config.baseURL || '') + (config.url || '')
+  });
   return config;
 });
 
 // Add response interceptor to handle 401 errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('✅ API Response:', {
+      status: response.status,
+      url: response.config.url || '',
+      data: response.data
+    });
+    return response;
+  },
   (error) => {
+    console.error('❌ API Error:', {
+      status: error.response?.status,
+      url: error.config?.url || '',
+      message: error.message,
+      data: error.response?.data,
+      baseURL: error.config?.baseURL
+    });
+    
     if (error.response?.status === 401) {
       console.error('Authentication failed - clearing invalid token');
       // Clear invalid tokens
