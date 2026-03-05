@@ -23,6 +23,9 @@ origins = [
     "http://127.0.0.1:5175",
     "http://localhost:*",
     "http://127.0.0.1:*",
+    "https://vidyamitra-frontend-uqfo.onrender.com",
+    "https://vidyamitra-frontend-uqfo.onrender.com/*",
+    "*"  # Allow all origins for production
 ]
 
 app.add_middleware(
