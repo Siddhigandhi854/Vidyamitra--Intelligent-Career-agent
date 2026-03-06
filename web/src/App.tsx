@@ -19,6 +19,31 @@ const RouteDebugger: React.FC = () => {
     console.log('🛣️ Route changed to:', location.pathname);
     console.log('🔍 Search params:', location.search);
     console.log('📍 Hash:', location.hash);
+    console.log('🔐 Auth check:', {
+      token: localStorage.getItem('vm_token') ? 'exists' : 'missing',
+      email: localStorage.getItem('vm_user_email')
+    });
+    
+    // Check for potential issues
+    if (location.pathname === '/dashboard') {
+      console.log('🎯 Dashboard route detected - checking for issues...');
+      
+      // Check if required components are available
+      try {
+        const DashboardDebug = require('./pages/Dashboard/DashboardDebug').DashboardDebug;
+        console.log('✅ DashboardDebug component loaded successfully');
+      } catch (error) {
+        console.error('❌ DashboardDebug component failed to load:', error);
+      }
+      
+      // Check if ErrorBoundary is working
+      try {
+        const ErrorBoundary = require('./components/ErrorBoundary').default;
+        console.log('✅ ErrorBoundary component loaded successfully');
+      } catch (error) {
+        console.error('❌ ErrorBoundary component failed to load:', error);
+      }
+    }
   }, [location]);
   
   return null;
