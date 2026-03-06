@@ -12,53 +12,40 @@ export const DashboardSimple: React.FC = () => {
   const [jobs, setJobs] = useState<any>(null);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        // Just set some basic mock data instead of API calls
-        const mockData = {
-          resume: {
-            filename: 'resume.pdf',
-            detected_role: 'Software Developer',
-            score: 85,
-            skills: ['React', 'TypeScript', 'Node.js']
-          },
-          training: {
-            modules: [
-              { id: 1, title: 'React Fundamentals', status: 'completed' },
-              { id: 2, title: 'Advanced TypeScript', status: 'in-progress' }
-            ]
-          },
-          progress: {
-            overview: {
-              resume_score: 85,
-              quiz_average: 78,
-              interviews_completed: 2,
-              training_modules_completed: 1
-            }
-          },
-          jobs: [
-            { title: 'Senior React Developer', company: 'Tech Corp', location: 'Remote' },
-            { title: 'Full Stack Engineer', company: 'StartupXYZ', location: 'Hybrid' }
-          ]
-        };
-
-        setResume(mockData.resume);
-        setTraining(mockData.training);
-        setProgress(mockData.progress);
-        setJobs(mockData.jobs);
-      } finally {
-        setLoading(false);
-      }
+    // Set mock data immediately for fast loading
+    const mockData = {
+      resume: {
+        filename: 'resume.pdf',
+        detected_role: 'Software Developer',
+        score: 85,
+        skills: ['React', 'TypeScript', 'Node.js']
+      },
+      training: {
+        modules: [
+          { id: 1, title: 'React Fundamentals', status: 'completed' },
+          { id: 2, title: 'Advanced TypeScript', status: 'in-progress' }
+        ]
+      },
+      progress: {
+        overview: {
+          resume_score: 85,
+          quiz_average: 78,
+          interviews_completed: 2,
+          training_modules_completed: 1
+        }
+      },
+      jobs: [
+        { title: 'Senior React Developer', company: 'Tech Corp', location: 'Remote' },
+        { title: 'Full Stack Engineer', company: 'StartupXYZ', location: 'Hybrid' }
+      ]
     };
 
-    load();
-
-    // Listen for resume updates
-    const handleResumeUpdate = (event: CustomEvent) => {
-      console.log('📊 Dashboard received resume update:', event.detail);
-      setResume(event.detail);
-    };
-
+    setResume(mockData.resume);
+    setTraining(mockData.training);
+    setProgress(mockData.progress);
+    setJobs(mockData.jobs);
+    setLoading(false);
+    console.log('� Dashboard loaded with mock data - FAST!');
     window.addEventListener('resume-updated', handleResumeUpdate as EventListener);
 
     return () => {

@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
-import { LoginModern } from "../pages/Auth/LoginModern";
+import { Login } from "../pages/Auth/Login";
 import { Register } from "../pages/Auth/Register";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
@@ -54,7 +54,7 @@ export const AppRouter: React.FC = () => {
         path="/login"
         element={
           <PublicRoute>
-            <LoginModern />
+            <Login />
           </PublicRoute>
         }
       />
