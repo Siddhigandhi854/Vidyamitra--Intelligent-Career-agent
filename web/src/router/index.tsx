@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContextSimple";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
 import { LoginSimple } from "../pages/Auth/LoginSimple";
@@ -16,13 +15,11 @@ import { MockInterview } from "../pages/Interview/MockInterview";
 import { ProgressReal } from "../pages/Progress/ProgressReal";
 
 const RequireAuth: React.FC<{ children: React.ReactElement }> = ({ children }) => {
-  const { user, loading } = useAuth();
+  // Simple token check instead of complex auth context
+  const token = localStorage.getItem('vm_token');
+  const userEmail = localStorage.getItem('vm_user_email');
   
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-  
-  if (!user) {
+  if (!token || !userEmail) {
     return <Navigate to="/login" replace />;
   }
   
@@ -30,13 +27,10 @@ const RequireAuth: React.FC<{ children: React.ReactElement }> = ({ children }) =
 };
 
 const PublicRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
-  const { user, loading } = useAuth();
+  // Simple check - if user is logged in, redirect to dashboard
+  const token = localStorage.getItem('vm_token');
   
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-  
-  if (user) {
+  if (token) {
     return <Navigate to="/dashboard" replace />;
   }
   
