@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContextSimple";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
 import { LoginSimple } from "../pages/Auth/LoginSimple";
-import { Register } from "../pages/Auth/Register";
+import { RegisterWorking } from "../pages/Auth/RegisterWorking";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
 import { DashboardSimple } from "../pages/Dashboard/DashboardSimple";
@@ -55,7 +55,7 @@ export const AppRouter: React.FC = () => {
         path="/register"
         element={
           <PublicRoute>
-            <Register />
+            <RegisterWorking />
           </PublicRoute>
         }
       />

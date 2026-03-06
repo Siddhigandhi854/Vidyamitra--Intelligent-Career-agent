@@ -14,24 +14,42 @@ export const LoginSimple: React.FC = () => {
     setError(null);
     
     try {
-      console.log('🔐 SIMPLE LOGIN ATTEMPT');
+      console.log('🔐 REAL LOGIN ATTEMPT');
       
-      // Simple test credentials
-      if (email === "test@example.com" && password === "test123") {
-        console.log('✅ LOGIN SUCCESS');
-        
-        // Store mock token
-        localStorage.setItem('vm_token', 'mock_token_' + Date.now());
-        localStorage.setItem('vm_user_email', email);
-        
-        // Navigate to dashboard
-        navigate('/dashboard');
-      } else {
-        setError('Invalid credentials. Use test@example.com / test123');
+      // Use real backend API
+      const response = await fetch('https://vidyamitra-backend-uprd.onrender.com/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: email,
+          password: password
+        })
+      });
+
+      console.log('🔐 LOGIN RESPONSE STATUS:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ LOGIN FAILED:', errorText);
+        setError(errorText || 'Login failed');
+        return;
       }
+
+      const data = await response.json();
+      console.log('✅ LOGIN SUCCESS:', data);
+      
+      // Store real token
+      localStorage.setItem('vm_token', data.access_token);
+      localStorage.setItem('vm_user_email', email);
+      
+      // Navigate to dashboard
+      navigate('/dashboard');
       
     } catch (err: any) {
-      setError(err.message || 'Login failed');
+      console.error('❌ LOGIN ERROR:', err);
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -166,7 +184,10 @@ export const LoginSimple: React.FC = () => {
           color: "rgba(255, 255, 255, 0.8)"
         }}>
           <p style={{ fontSize: "0.9rem" }}>
-            Test Credentials: test@example.com / test123
+            Don't have an account?{" "}
+            <a href="/register" style={{ color: "white", textDecoration: "underline" }}>
+              Sign up
+            </a>
           </p>
         </div>
       </div>
