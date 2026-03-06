@@ -1,4 +1,4 @@
-import api from "./apiProduction";
+import api from "./apiDirect";
 
 interface AuthPayload {
   username: string;
@@ -14,10 +14,10 @@ export async function registerUser(payload: AuthPayload): Promise<AuthResponse> 
   try {
     console.log('🔐 Registering user:', payload.username);
     const url = '/auth/register';
-    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
+    const fullUrl = `https://vidyamitra-backend-uprd.onrender.com${url}`;
     console.log('🌐 Full registration URL:', fullUrl);
     
-    const { data } = await api.post<AuthResponse>(url, payload);
+    const { data } = await api.post(url, payload);
     console.log('✅ Registration successful:', data);
     return data;
   } catch (error: any) {
@@ -30,10 +30,10 @@ export async function loginUser(payload: AuthPayload): Promise<AuthResponse> {
   try {
     console.log('🔐 Logging in user:', payload.username);
     const url = '/auth/login';
-    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
+    const fullUrl = `https://vidyamitra-backend-uprd.onrender.com${url}`;
     console.log('🌐 Full login URL:', fullUrl);
     
-    const { data } = await api.post<AuthResponse>(url, payload);
+    const { data } = await api.post(url, payload);
     console.log('✅ Login successful:', data);
     return data;
   } catch (error: any) {
