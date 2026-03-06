@@ -3,11 +3,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContextSimple";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
-import { LoginBasic } from "../pages/Auth/LoginBasic";
+import { Login } from "../pages/Auth/Login";
 import { Register } from "../pages/Auth/Register";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
-import { DashboardFixed } from "../pages/Dashboard/DashboardFixed";
+import { DashboardSimple } from "../pages/Dashboard/DashboardSimple";
 import { ResumeUploadModern } from "../pages/Resume/ResumeUploadModern";
 import { JobRoles } from "../pages/Jobs/JobRoles";
 import { TrainingPlan } from "../pages/Training/TrainingPlan";
@@ -50,7 +50,7 @@ export const AppRouter: React.FC = () => {
       <Route path="/" element={<Navigate to="/login" replace />} />
       
       {/* Public routes */}
-      <Route path="/login" element={<LoginBasic />} />
+      <Route path="/login" element={<Login />} />
       <Route
         path="/register"
         element={
@@ -71,7 +71,7 @@ export const AppRouter: React.FC = () => {
           </RequireAuth>
         }
       >
-        <Route path="dashboard" element={<DashboardFixed />} />
+        <Route path="dashboard" element={<DashboardSimple />} />
         <Route path="resume" element={<ResumeUploadModern />} />
         <Route path="roles" element={<JobRoles />} />
         <Route path="training" element={<TrainingPlan />} />
