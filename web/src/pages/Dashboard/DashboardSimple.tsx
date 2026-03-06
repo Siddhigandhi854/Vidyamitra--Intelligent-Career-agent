@@ -45,7 +45,13 @@ export const DashboardSimple: React.FC = () => {
     setProgress(mockData.progress);
     setJobs(mockData.jobs);
     setLoading(false);
-    console.log('� Dashboard loaded with mock data - FAST!');
+    console.log('📊 Dashboard loaded with mock data - FAST!');
+    // Listen for resume updates
+    const handleResumeUpdate = (event: CustomEvent) => {
+      console.log('📊 Dashboard received resume update:', event.detail);
+      setResume(event.detail);
+    };
+
     window.addEventListener('resume-updated', handleResumeUpdate as EventListener);
 
     return () => {
@@ -67,13 +73,22 @@ export const DashboardSimple: React.FC = () => {
           <div style={{
             width: '50px',
             height: '50px',
-            border: '4px solid white',
-            borderTop: '4px solid transparent',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 20px'
-          }}></div>
-          <h2>Loading Dashboard...</h2>
+            border: '4px solid #ffffff',
+            borderTop: '4px solid #ffffff',
+            borderRight: '4px solid #ffffff',
+            borderBottom: '4px solid #ffffff',
+            borderLeft: '4px solid #ffffff',
+          }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              border: '2px solid #ffffff',
+              borderTop: '2px solid #ffffff',
+              borderRight: '2px solid #ffffff',
+              borderBottom: '2px solid #ffffff',
+              borderLeft: '2px solid #ffffff',
+            }}></div>
+          </div>
         </div>
       </div>
     );
