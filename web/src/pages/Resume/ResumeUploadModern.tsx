@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { uploadResume } from "../../services/resume";
 import { Card, CardContent, CardTitle } from "../../components/ui";
-import { Button } from "../../components/ui";
+import { useAuth } from "../../contexts/AuthContextSimple";
 import { FileText, Upload, CheckCircle, AlertCircle, TrendingUp } from 'lucide-react';
 
 export const ResumeUploadModern: React.FC = () => {

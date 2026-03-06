@@ -28,8 +28,12 @@ export const LoginModern: React.FC = () => {
         setError(result.error);
         console.error('Login failed:', result.error);
       } else {
-        console.log('Login successful, redirecting to dashboard');
-        navigate("/dashboard");
+        console.log('Login successful, waiting for state update...');
+        // Add small delay to ensure user state is updated
+        setTimeout(() => {
+          console.log('Redirecting to dashboard now');
+          navigate("/dashboard");
+        }, 100);
       }
     } catch (err: any) {
       console.error('Login error:', err);

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { AuthUser, AuthContextType } from '../lib/supabase'
-import { registerUser, loginUser } from '../services/authSimple'
+import { loginUser, registerUser } from '../services/authEmergency'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -62,21 +62,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signIn = async (email: string, password: string): Promise<{ error: string | null }> => {
     try {
       console.log('Signing in user:', email)
-      const response = await loginUser({
-        username: email,
-        password: password
-      })
+      const response = await loginUser(email, password)
 
       // Store token and user info
       localStorage.setItem('vm_token', response.access_token)
       localStorage.setItem('vm_user_email', email)
       
       // Update user state
-      setUser({
+      const newUser = {
         id: email,
         email: email,
         user_metadata: {}
-      })
+      };
+      setUser(newUser);
+      console.log('🚨 USER STATE UPDATED:', newUser);
 
       console.log('Sign in successful')
       return { error: null }
@@ -90,10 +89,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signUp = async (email: string, password: string, metadata?: Record<string, any>): Promise<{ error: string | null; requiresConfirmation?: boolean }> => {
     try {
       console.log('Signing up user:', email)
-      const response = await registerUser({
-        username: email,
-        password: password
-      })
+      const response = await registerUser(email, password)
 
       // Store token and user info
       localStorage.setItem('vm_token', response.access_token)
