@@ -7,7 +7,7 @@ import { LoginSimple } from "../pages/Auth/LoginSimple";
 import { RegisterWorking } from "../pages/Auth/RegisterWorking";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
-import { DashboardDebug } from "../pages/Dashboard/DashboardDebug";
+import { DashboardSimple } from "../pages/Dashboard/DashboardSimple";
 import { ResumeUploadModern } from "../pages/Resume/ResumeUploadModern";
 import { JobRoles } from "../pages/Jobs/JobRoles";
 import { TrainingPlan } from "../pages/Training/TrainingPlan";
@@ -68,7 +68,7 @@ export const AppRouter: React.FC = () => {
       >
         <Route path="dashboard" element={
           <ErrorBoundary>
-            <DashboardDebug />
+            <DashboardSimple />
           </ErrorBoundary>
         } />
         <Route path="resume" element={<ResumeUploadModern />} />

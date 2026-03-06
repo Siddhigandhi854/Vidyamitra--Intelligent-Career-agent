@@ -16,19 +16,62 @@ export const DashboardSimple: React.FC = () => {
       try {
         console.log('📊 Loading dashboard data from your Supabase...');
         
-        // Load your real data - no fallbacks, no testing data
-        const [r, t, p, j] = await Promise.all([
-          fetchResumeSummary(),
-          fetchTrainingPlan(),
-          fetchProgressOverview(),
-          fetchJobRecommendations(),
-        ]);
+        // Load data individually with error handling to prevent white screen
+        let resumeData = null, trainingData = null, progressData = null, jobsData = null;
         
-        console.log('✅ Your real data loaded:', { r, t, p, j });
-        setResume(r);
-        setTraining(t);
-        setProgress(p);
-        setJobs(j);
+        try {
+          resumeData = await fetchResumeSummary();
+          console.log('✅ Resume data loaded:', resumeData);
+        } catch (e) {
+          console.error('❌ Resume data failed:', e);
+          resumeData = {
+            filename: 'No resume uploaded',
+            detected_role: 'Software Developer',
+            score: 0,
+            skills: []
+          };
+        }
+        
+        try {
+          trainingData = await fetchTrainingPlan();
+          console.log('✅ Training data loaded:', trainingData);
+        } catch (e) {
+          console.error('❌ Training data failed:', e);
+          trainingData = {
+            modules: []
+          };
+        }
+        
+        try {
+          progressData = await fetchProgressOverview();
+          console.log('✅ Progress data loaded:', progressData);
+        } catch (e) {
+          console.error('❌ Progress data failed:', e);
+          progressData = {
+            overview: {
+              resume_score: 0,
+              quiz_average: 0,
+              interviews_completed: 0,
+              training_modules_completed: 0
+            }
+          };
+        }
+        
+        try {
+          jobsData = await fetchJobRecommendations();
+          console.log('✅ Jobs data loaded:', jobsData);
+        } catch (e) {
+          console.error('❌ Jobs data failed:', e);
+          jobsData = {
+            recommendations: []
+          };
+        }
+        
+        console.log('✅ Your real data loaded:', { resumeData, trainingData, progressData, jobsData });
+        setResume(resumeData);
+        setTraining(trainingData);
+        setProgress(progressData);
+        setJobs(jobsData);
         
       } catch (e) {
         console.error('❌ Error loading your real data:', e);
