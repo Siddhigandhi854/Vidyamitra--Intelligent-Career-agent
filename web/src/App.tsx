@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import { AppRouter } from './router';
 import { AuthProvider } from './contexts/AuthContextSimple';
 import { Notification } from './components/ui';
@@ -11,10 +11,24 @@ console.log('🎨 UI Components loaded successfully!');
 console.log('⚡ Performance optimizations active!');
 console.log('🚀 VidyāMitra Enhanced Version');
 
+// Route debugger component
+const RouteDebugger: React.FC = () => {
+  const location = useLocation();
+  
+  React.useEffect(() => {
+    console.log('🛣️ Route changed to:', location.pathname);
+    console.log('🔍 Search params:', location.search);
+    console.log('📍 Hash:', location.hash);
+  }, [location]);
+  
+  return null;
+};
+
 const App: React.FC = () => {
   const [showNotification, setShowNotification] = React.useState(true);
 
   React.useEffect(() => {
+    console.log('🚀 App component mounted');
     const timer = setTimeout(() => {
       setShowNotification(false);
     }, 8000);
@@ -33,6 +47,7 @@ const App: React.FC = () => {
         />
       )}
       <BrowserRouter>
+        <RouteDebugger />
         <AuthProvider>
           <AppRouter />
         </AuthProvider>

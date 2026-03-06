@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
+import ErrorBoundary from "../components/ErrorBoundary";
 import { LoginSimple } from "../pages/Auth/LoginSimple";
 import { RegisterWorking } from "../pages/Auth/RegisterWorking";
 import { TestAuth } from "../pages/Auth/TestAuth";
@@ -65,7 +66,11 @@ export const AppRouter: React.FC = () => {
           </RequireAuth>
         }
       >
-        <Route path="dashboard" element={<DashboardSimple />} />
+        <Route path="dashboard" element={
+          <ErrorBoundary>
+            <DashboardSimple />
+          </ErrorBoundary>
+        } />
         <Route path="resume" element={<ResumeUploadModern />} />
         <Route path="roles" element={<JobRoles />} />
         <Route path="training" element={<TrainingPlan />} />

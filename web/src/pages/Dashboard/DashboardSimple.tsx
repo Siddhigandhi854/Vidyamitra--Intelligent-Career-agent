@@ -12,40 +12,102 @@ export const DashboardSimple: React.FC = () => {
   const [jobs, setJobs] = useState<any>(null);
 
   useEffect(() => {
-    // Set mock data immediately for fast loading
-    const mockData = {
-      resume: {
-        filename: 'resume.pdf',
-        detected_role: 'Software Developer',
-        score: 85,
-        skills: ['React', 'TypeScript', 'Node.js']
-      },
-      training: {
-        modules: [
-          { id: 1, title: 'React Fundamentals', status: 'completed' },
-          { id: 2, title: 'Advanced TypeScript', status: 'in-progress' }
-        ]
-      },
-      progress: {
-        overview: {
-          resume_score: 85,
-          quiz_average: 78,
-          interviews_completed: 2,
-          training_modules_completed: 1
+    const load = async () => {
+      try {
+        console.log('📊 Loading dashboard data...');
+        
+        // Load data with error handling for each service
+        let resumeData = null, trainingData = null, progressData = null, jobsData = null;
+        
+        try {
+          resumeData = await fetchResumeSummary();
+          console.log('✅ Resume data loaded:', resumeData);
+        } catch (e) {
+          console.warn('⚠️ Resume data failed, using mock:', e);
+          resumeData = {
+            filename: 'resume.pdf',
+            detected_role: 'Software Developer',
+            score: 85,
+            skills: ['React', 'TypeScript', 'Node.js']
+          };
         }
-      },
-      jobs: [
-        { title: 'Senior React Developer', company: 'Tech Corp', location: 'Remote' },
-        { title: 'Full Stack Engineer', company: 'StartupXYZ', location: 'Hybrid' }
-      ]
+        
+        try {
+          trainingData = await fetchTrainingPlan();
+          console.log('✅ Training data loaded:', trainingData);
+        } catch (e) {
+          console.warn('⚠️ Training data failed, using mock:', e);
+          trainingData = {
+            modules: [
+              { id: 1, title: 'React Fundamentals', status: 'completed' },
+              { id: 2, title: 'Advanced TypeScript', status: 'in-progress' }
+            ]
+          };
+        }
+        
+        try {
+          progressData = await fetchProgressOverview();
+          console.log('✅ Progress data loaded:', progressData);
+        } catch (e) {
+          console.warn('⚠️ Progress data failed, using mock:', e);
+          progressData = {
+            overview: {
+              resume_score: 85,
+              quiz_average: 78,
+              interviews_completed: 2,
+              training_modules_completed: 1
+            }
+          };
+        }
+        
+        try {
+          jobsData = await fetchJobRecommendations();
+          console.log('✅ Jobs data loaded:', jobsData);
+        } catch (e) {
+          console.warn('⚠️ Jobs data failed, using mock:', e);
+          jobsData = [
+            { title: 'Senior React Developer', company: 'Tech Corp', location: 'Remote' },
+            { title: 'Full Stack Engineer', company: 'StartupXYZ', location: 'Hybrid' }
+          ];
+        }
+        
+        setResume(resumeData);
+        setTraining(trainingData);
+        setProgress(progressData);
+        setJobs(jobsData);
+        
+      } catch (e) {
+        console.error('Dashboard data load error:', e);
+        // Set fallback data
+        setResume({
+          filename: 'resume.pdf',
+          detected_role: 'Software Developer',
+          score: 85,
+          skills: ['React', 'TypeScript', 'Node.js']
+        });
+        setTraining({
+          modules: [
+            { id: 1, title: 'React Fundamentals', status: 'completed' },
+            { id: 2, title: 'Advanced TypeScript', status: 'in-progress' }
+          ]
+        });
+        setProgress({
+          overview: {
+            resume_score: 85,
+            quiz_average: 78,
+            interviews_completed: 2,
+            training_modules_completed: 1
+          }
+        });
+        setJobs([
+          { title: 'Senior React Developer', company: 'Tech Corp', location: 'Remote' },
+          { title: 'Full Stack Engineer', company: 'StartupXYZ', location: 'Hybrid' }
+        ]);
+      } finally {
+        setLoading(false);
+      }
     };
-
-    setResume(mockData.resume);
-    setTraining(mockData.training);
-    setProgress(mockData.progress);
-    setJobs(mockData.jobs);
-    setLoading(false);
-    console.log('📊 Dashboard loaded with mock data - FAST!');
+    load();
     // Listen for resume updates
     const handleResumeUpdate = (event: CustomEvent) => {
       console.log('📊 Dashboard received resume update:', event.detail);
