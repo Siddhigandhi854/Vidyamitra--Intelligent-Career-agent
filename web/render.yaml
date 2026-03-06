@@ -1,0 +1,14 @@
+services:
+  # Frontend Service
+  - type: web
+    name: vidyamitra-frontend
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://vidyamitra-backend-uprd.onrender.com
+      - key: VITE_SUPABASE_URL
+        value: https://ilmwebrpykhijzkxfimc.supabase.co
+      - key: VITE_SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsbXdlYnJweWtoaWp6a3hmaW1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4MzYwNDksImV4cCI6MjA4NzQxMjA0OX0.CXp8wUsuV4R2_-kUkGhJ9vH159fCGgnIfVTQkTxDNRo
