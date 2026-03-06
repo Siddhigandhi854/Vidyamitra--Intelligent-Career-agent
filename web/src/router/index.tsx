@@ -50,14 +50,7 @@ export const AppRouter: React.FC = () => {
       <Route path="/" element={<Navigate to="/login" replace />} />
       
       {/* Public routes */}
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <LoginBasic />
-          </PublicRoute>
-        }
-      />
+      <Route path="/login" element={<LoginBasic />} />
       <Route
         path="/register"
         element={
