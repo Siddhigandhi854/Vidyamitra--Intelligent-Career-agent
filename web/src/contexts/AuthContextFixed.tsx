@@ -28,6 +28,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.log('🔧 CHECKING AUTH:', { token: !!token, userEmail })
       
       if (token && userEmail) {
+        // Check if token is expired
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]))
+          const currentTime = Date.now() / 1000
+          const tokenExpiryTime = payload.exp
+          
+          console.log('🔧 TOKEN EXPIRY CHECK:', { 
+            currentTime, 
+            tokenExpiryTime, 
+            isExpired: currentTime > tokenExpiryTime 
+          })
+          
+          if (currentTime > tokenExpiryTime) {
+            console.log('🔴 TOKEN EXPIRED - Clearing and redirecting')
+            localStorage.removeItem('vm_token')
+            localStorage.removeItem('vm_user_email')
+            localStorage.removeItem('vm_last_role')
+            sessionStorage.removeItem('vm_token')
+            sessionStorage.removeItem('vm_user_email')
+            sessionStorage.removeItem('vm_last_role')
+            setUser(null)
+            return false
+          }
+        } catch (e) {
+          console.log('🔧 TOKEN VALIDATION ERROR:', e)
+          // If token is invalid, clear it
+          localStorage.removeItem('vm_token')
+          localStorage.removeItem('vm_user_email')
+          setUser(null)
+          return false
+        }
+        
         // Set user immediately
         const newUser = {
           id: userEmail,
@@ -59,6 +91,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(false)
     
     console.log('🔧 AUTH CONTEXT INITIALIZED')
+  }, [])
+
+  // Add effect to check auth on every render
+  useEffect(() => {
+    console.log('🔧 CHECKING AUTH PERSISTENCE...')
+    checkAndSetUser()
+  }, [user]) // Re-check when user state changes
+
+  // Listen for storage changes from other tabs
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'vm_token' || e.key === 'vm_user_email') {
+        console.log('🔧 STORAGE CHANGED:', e.key)
+        checkAndSetUser()
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
   }, [])
 
   const signIn = async (email: string, password: string): Promise<{ error: string | null }> => {
