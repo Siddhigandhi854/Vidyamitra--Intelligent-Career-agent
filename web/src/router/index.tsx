@@ -8,7 +8,7 @@ import { Register } from "../pages/Auth/Register";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
 import { DashboardSimple } from "../pages/Dashboard/DashboardSimple";
-import { ResumeUploadModern } from "../pages/Resume/ResumeUploadModern";
+import { ResumeTest } from "../pages/Resume/ResumeTest";
 import { JobRoles } from "../pages/Jobs/JobRoles";
 import { TrainingPlan } from "../pages/Training/TrainingPlan";
 import { QuizModule } from "../pages/Quiz/QuizModule";
@@ -79,7 +79,7 @@ export const AppRouter: React.FC = () => {
         }
       >
         <Route path="dashboard" element={<DashboardSimple />} />
-        <Route path="resume" element={<ResumeUploadModern />} />
+        <Route path="resume" element={<ResumeTest />} />
         <Route path="roles" element={<JobRoles />} />
         <Route path="training" element={<TrainingPlan />} />
         <Route path="quiz" element={<QuizModule />} />
