@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContextSimple";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
 import ErrorBoundary from "../components/ErrorBoundary";
@@ -7,7 +8,7 @@ import { LoginSimple } from "../pages/Auth/LoginSimple";
 import { RegisterWorking } from "../pages/Auth/RegisterWorking";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
-import { DashboardSimple } from "../pages/Dashboard/DashboardSimple";
+import { Dashboard } from "../pages/Dashboard/Dashboard";
 import { ResumeUploadModern } from "../pages/Resume/ResumeUploadModern";
 import { JobRoles } from "../pages/Jobs/JobRoles";
 import { TrainingPlan } from "../pages/Training/TrainingPlan";
@@ -16,11 +17,13 @@ import { MockInterview } from "../pages/Interview/MockInterview";
 import { ProgressReal } from "../pages/Progress/ProgressReal";
 
 const RequireAuth: React.FC<{ children: React.ReactElement }> = ({ children }) => {
-  // Simple token check instead of complex auth context
-  const token = localStorage.getItem('vm_token');
-  const userEmail = localStorage.getItem('vm_user_email');
+  const { user, loading } = useAuth();
   
-  if (!token || !userEmail) {
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+  
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
   
@@ -28,10 +31,13 @@ const RequireAuth: React.FC<{ children: React.ReactElement }> = ({ children }) =
 };
 
 const PublicRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
-  // Simple check - if user is logged in, redirect to dashboard
-  const token = localStorage.getItem('vm_token');
+  const { user, loading } = useAuth();
   
-  if (token) {
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+  
+  if (user) {
     return <Navigate to="/dashboard" replace />;
   }
   
@@ -68,7 +74,7 @@ export const AppRouter: React.FC = () => {
       >
         <Route path="dashboard" element={
           <ErrorBoundary>
-            <DashboardSimple />
+            <Dashboard />
           </ErrorBoundary>
         } />
         <Route path="resume" element={<ResumeUploadModern />} />
