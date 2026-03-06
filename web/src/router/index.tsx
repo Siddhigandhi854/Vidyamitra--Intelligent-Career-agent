@@ -7,7 +7,7 @@ import { LoginBasic } from "../pages/Auth/LoginBasic";
 import { Register } from "../pages/Auth/Register";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
-import { DashboardBasic } from "../pages/Dashboard/DashboardBasic";
+import { DashboardFixed } from "../pages/Dashboard/DashboardFixed";
 import { ResumeUploadModern } from "../pages/Resume/ResumeUploadModern";
 import { JobRoles } from "../pages/Jobs/JobRoles";
 import { TrainingPlan } from "../pages/Training/TrainingPlan";
@@ -71,7 +71,7 @@ export const AppRouter: React.FC = () => {
           </RequireAuth>
         }
       >
-        <Route path="dashboard" element={<DashboardBasic />} />
+        <Route path="dashboard" element={<DashboardFixed />} />
         <Route path="resume" element={<ResumeUploadModern />} />
         <Route path="roles" element={<JobRoles />} />
         <Route path="training" element={<TrainingPlan />} />
