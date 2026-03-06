@@ -14,7 +14,7 @@ export async function uploadResume(file: File): Promise<ResumeParseResult> {
     form.append("file", file);
     
     const url = '/resume/parse';
-    const fullUrl = `https://vidyamitra-backend-uprd.onrender.com${url}`;
+    const fullUrl = `http://localhost:8000${url}`;
     console.log('🌐 Full resume upload URL:', fullUrl);
     
     const { data } = await api.post(url, form, {
@@ -32,7 +32,7 @@ export async function uploadResume(file: File): Promise<ResumeParseResult> {
 export async function fetchResumeSummary() {
   try {
     const url = '/resume/summary';
-    const fullUrl = `https://vidyamitra-backend-uprd.onrender.com${url}`;
+    const fullUrl = `http://localhost:8000${url}`;
     console.log('🌐 Full resume summary URL:', fullUrl);
     
     const { data } = await api.get(url);

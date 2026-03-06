@@ -41,8 +41,8 @@ export const RegisterWorking: React.FC = () => {
     try {
       console.log('🔐 REAL REGISTER ATTEMPT');
       
-      // Use real backend API
-      const response = await fetch('https://vidyamitra-backend-uprd.onrender.com/auth/register', {
+      // Use your local backend API with your real data
+      const response = await fetch('http://localhost:8000/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

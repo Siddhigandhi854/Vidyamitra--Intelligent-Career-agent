@@ -16,8 +16,8 @@ export const LoginSimple: React.FC = () => {
     try {
       console.log('🔐 REAL LOGIN ATTEMPT');
       
-      // Use real backend API
-      const response = await fetch('https://vidyamitra-backend-uprd.onrender.com/auth/login', {
+      // Use your local backend API with your real data
+      const response = await fetch('http://localhost:8000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
