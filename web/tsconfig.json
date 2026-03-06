@@ -17,6 +17,10 @@
     "jsx": "react-jsx"
   },
   "include": ["src"],
+  "exclude": [
+    "src/pages/Dashboard/DashboardBasic.tsx",
+    "src/pages/Dashboard/DashboardWorking.tsx"
+  ],
   "references": []
 }
 

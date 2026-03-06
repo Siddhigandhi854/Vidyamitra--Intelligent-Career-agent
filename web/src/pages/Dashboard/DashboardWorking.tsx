@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContextSimple";
 
 export const DashboardWorking: React.FC = () => {
   const { user } = useAuth();
@@ -146,7 +146,7 @@ export const DashboardWorking: React.FC = () => {
             
             <a href="/roles" className="flex items-center p-3 bg-white rounded-lg shadow hover:shadow-md transition-shadow">
               <svg className="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.9 23.9 0 0 1.91-2.357-6.537A8 8 0 111.317 8 0 4.242 0 9.417 0 4.87-.006a9.996 9.996 0 0 2.166-4.77 4.77-4.77 4.259-9.512-5.812.077-6.516-1.07-6.516-1.07h4.242c.001.001.001" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
               </svg>
               <span className="ml-3 text-base font-medium">Find Jobs</span>
             </a>
@@ -155,5 +155,4 @@ export const DashboardWorking: React.FC = () => {
       </div>
     </div>
   );
-};
 };

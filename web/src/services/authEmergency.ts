@@ -1,5 +1,7 @@
-// Emergency auth fix - most basic approach
-const BACKEND_URL = "https://vidyamitra-backend-uprd.onrender.com";
+// Emergency auth fix - dynamic backend selection
+const host = window.location.hostname;
+const isLocal = host === 'localhost' || host === '127.0.0.1';
+const BACKEND_URL = isLocal ? "http://127.0.0.1:8000" : "https://vidyamitra-backend-uprd.onrender.com";
 
 export async function loginUser(username: string, password: string) {
   try {

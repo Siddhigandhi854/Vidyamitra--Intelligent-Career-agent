@@ -18,6 +18,9 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
+  const host = window.location.hostname
+  const isLocal = host === 'localhost' || host === '127.0.0.1'
+  const backendUrl = isLocal ? 'http://127.0.0.1:8000' : 'https://vidyamitra-backend-uprd.onrender.com'
 
   // Simple auth check - no complex validation
   useEffect(() => {
@@ -49,8 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signIn = async (email: string, password: string) => {
     try {
       console.log('🔧 SIGNING IN:', email)
-      
-      const response = await fetch('https://vidyamitra-backend-uprd.onrender.com/auth/login', {
+      const response = await fetch(`${backendUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,8 +94,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signUp = async (email: string, password: string, metadata?: Record<string, any>) => {
     try {
       console.log('🔧 SIGNING UP:', email)
-      
-      const response = await fetch('https://vidyamitra-backend-uprd.onrender.com/auth/register', {
+      const response = await fetch(`${backendUrl}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }
 
-  const signOut = () => {
+  const signOut = async (): Promise<void> => {
     console.log('🔧 SIGNING OUT')
     localStorage.removeItem('vm_token')
     localStorage.removeItem('vm_user_email')

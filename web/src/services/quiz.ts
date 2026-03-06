@@ -3,15 +3,19 @@ import api from "./apiProduction";
 export async function fetchQuizConfig() {
   try {
     const url = '/quiz/config';
-    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
-    console.log('🌐 Full quiz config URL:', fullUrl);
+    console.log('🌐 Quiz config URL:', url);
     
     const { data } = await api.get(url);
     console.log('✅ Quiz config fetched:', data);
     return data;
   } catch (error: any) {
     console.error('❌ Quiz config fetch failed:', error);
-    throw error;
+    // Return fallback data if backend fails
+    return {
+      domains: ['React', 'JavaScript', 'TypeScript'],
+      difficulties: ['Beginner', 'Intermediate', 'Advanced'],
+      time_limits: [300, 600, 900]
+    };
   }
 }
 

@@ -5,8 +5,8 @@ const PROD_API_URL = "https://vidyamitra-backend-uprd.onrender.com";
 const DEV_API_URL = "http://localhost:8000";
 
 // Detect if we're in production (Render)
-const isProduction = window.location.hostname.includes('onrender.com') || 
-                    window.location.hostname !== 'localhost';
+const host = window.location.hostname;
+const isProduction = host.includes('onrender.com') || host.endsWith('.onrender.com');
 
 const API_BASE_URL = isProduction ? PROD_API_URL : DEV_API_URL;
 

@@ -37,9 +37,9 @@ export const ResumeTest: React.FC = () => {
         Response: ${uploadResult}
       `);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Test failed:', error);
-      setTestResult(`Error: ${error.message}`);
+      setTestResult(`Error: ${error?.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }

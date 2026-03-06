@@ -205,7 +205,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }
 
-  const signOut = () => {
+  const signOut = async (): Promise<void> => {
     console.log('🔧 SIGNING OUT')
     localStorage.removeItem('vm_token')
     localStorage.removeItem('vm_user_email')

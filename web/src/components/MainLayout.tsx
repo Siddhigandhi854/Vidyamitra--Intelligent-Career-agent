@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContextSimple";
 import { LogOut, User, Settings, Bell } from 'lucide-react';
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
