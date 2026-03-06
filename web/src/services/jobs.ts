@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./apiProduction";
 
 export async function fetchJobRecommendations() {
   try {

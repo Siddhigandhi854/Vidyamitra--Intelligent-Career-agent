@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./apiProduction";
 
 // Real progress tracking functions
 export async function fetchProgressOverview() {
