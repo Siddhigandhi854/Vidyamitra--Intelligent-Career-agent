@@ -14,8 +14,7 @@ export async function uploadResume(file: File): Promise<ResumeParseResult> {
     form.append("file", file);
     
     const url = '/resume/parse';
-    const fullUrl = `http://localhost:8000${url}`;
-    console.log('🌐 Full resume upload URL:', fullUrl);
+    console.log('🌐 Resume upload URL:', url);
     
     const { data } = await api.post(url, form, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -32,8 +31,7 @@ export async function uploadResume(file: File): Promise<ResumeParseResult> {
 export async function fetchResumeSummary() {
   try {
     const url = '/resume/summary';
-    const fullUrl = `http://localhost:8000${url}`;
-    console.log('🌐 Full resume summary URL:', fullUrl);
+    console.log('🌐 Resume summary URL:', url);
     
     const { data } = await api.get(url);
     console.log('✅ Resume summary response:', data);

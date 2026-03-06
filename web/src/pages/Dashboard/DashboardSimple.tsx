@@ -14,95 +14,34 @@ export const DashboardSimple: React.FC = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        console.log('📊 Loading dashboard data...');
+        console.log('📊 Loading dashboard data from your Supabase...');
         
-        // Load data with error handling for each service
-        let resumeData = null, trainingData = null, progressData = null, jobsData = null;
+        // Load your real data - no fallbacks, no testing data
+        const [r, t, p, j] = await Promise.all([
+          fetchResumeSummary(),
+          fetchTrainingPlan(),
+          fetchProgressOverview(),
+          fetchJobRecommendations(),
+        ]);
         
-        try {
-          resumeData = await fetchResumeSummary();
-          console.log('✅ Resume data loaded:', resumeData);
-        } catch (e) {
-          console.warn('⚠️ Resume data failed, using mock:', e);
-          resumeData = {
-            filename: 'resume.pdf',
-            detected_role: 'Software Developer',
-            score: 85,
-            skills: ['React', 'TypeScript', 'Node.js']
-          };
-        }
-        
-        try {
-          trainingData = await fetchTrainingPlan();
-          console.log('✅ Training data loaded:', trainingData);
-        } catch (e) {
-          console.warn('⚠️ Training data failed, using mock:', e);
-          trainingData = {
-            modules: [
-              { id: 1, title: 'React Fundamentals', status: 'completed' },
-              { id: 2, title: 'Advanced TypeScript', status: 'in-progress' }
-            ]
-          };
-        }
-        
-        try {
-          progressData = await fetchProgressOverview();
-          console.log('✅ Progress data loaded:', progressData);
-        } catch (e) {
-          console.warn('⚠️ Progress data failed, using mock:', e);
-          progressData = {
-            overview: {
-              resume_score: 85,
-              quiz_average: 78,
-              interviews_completed: 2,
-              training_modules_completed: 1
-            }
-          };
-        }
-        
-        try {
-          jobsData = await fetchJobRecommendations();
-          console.log('✅ Jobs data loaded:', jobsData);
-        } catch (e) {
-          console.warn('⚠️ Jobs data failed, using mock:', e);
-          jobsData = [
-            { title: 'Senior React Developer', company: 'Tech Corp', location: 'Remote' },
-            { title: 'Full Stack Engineer', company: 'StartupXYZ', location: 'Hybrid' }
-          ];
-        }
-        
-        setResume(resumeData);
-        setTraining(trainingData);
-        setProgress(progressData);
-        setJobs(jobsData);
+        console.log('✅ Your real data loaded:', { r, t, p, j });
+        setResume(r);
+        setTraining(t);
+        setProgress(p);
+        setJobs(j);
         
       } catch (e) {
-        console.error('Dashboard data load error:', e);
-        // Set fallback data
-        setResume({
-          filename: 'resume.pdf',
-          detected_role: 'Software Developer',
-          score: 85,
-          skills: ['React', 'TypeScript', 'Node.js']
-        });
-        setTraining({
-          modules: [
-            { id: 1, title: 'React Fundamentals', status: 'completed' },
-            { id: 2, title: 'Advanced TypeScript', status: 'in-progress' }
-          ]
-        });
-        setProgress({
-          overview: {
-            resume_score: 85,
-            quiz_average: 78,
-            interviews_completed: 2,
-            training_modules_completed: 1
-          }
-        });
-        setJobs([
-          { title: 'Senior React Developer', company: 'Tech Corp', location: 'Remote' },
-          { title: 'Full Stack Engineer', company: 'StartupXYZ', location: 'Hybrid' }
-        ]);
+        console.error('❌ Error loading your real data:', e);
+        console.log('🔍 Checking your backend connection...');
+        
+        // Check if your backend is running
+        try {
+          const response = await fetch('http://localhost:8000/');
+          console.log('🔧 Backend status:', response.status);
+        } catch (backendError) {
+          console.error('❌ Backend connection failed:', backendError);
+          console.log('⚠️ Please ensure your backend is running on http://localhost:8000');
+        }
       } finally {
         setLoading(false);
       }

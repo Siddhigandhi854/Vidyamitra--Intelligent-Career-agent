@@ -3,8 +3,7 @@ import api from "./apiProduction";
 export async function fetchJobRecommendations() {
   try {
     const url = '/jobs/recommendations';
-    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
-    console.log('🌐 Full job recommendations URL:', fullUrl);
+    console.log('🌐 Job recommendations URL:', url);
     
     const { data } = await api.get(url);
     console.log('✅ Job recommendations fetched:', data);

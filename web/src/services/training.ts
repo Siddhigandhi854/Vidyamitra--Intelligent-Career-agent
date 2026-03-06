@@ -28,8 +28,7 @@ export async function fetchTrainingPlan(targetRole?: string) {
 
   try {
     const url = '/training/generate-plan';
-    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
-    console.log('🌐 Full training plan URL:', fullUrl);
+    console.log('🌐 Training plan URL:', url);
     
     const { data } = await api.post(url, request);
     console.log('✅ Training plan generated:', data);

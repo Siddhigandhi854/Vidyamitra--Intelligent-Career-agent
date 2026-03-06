@@ -3,8 +3,7 @@ import api from "./apiProduction";
 export async function fetchProgressOverview() {
   try {
     const url = '/progress/overview';
-    const fullUrl = `${import.meta.env.VITE_API_URL}${url}`;
-    console.log('🌐 Full progress overview URL:', fullUrl);
+    console.log('🌐 Progress overview URL:', url);
     
     const { data } = await api.get(url);
     console.log('✅ Progress overview fetched:', data);
