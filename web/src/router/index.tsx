@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContextSimple";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
-import { Login } from "../pages/Auth/Login";
+import { LoginWorking } from "../pages/Auth/LoginWorking";
 import { Register } from "../pages/Auth/Register";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
@@ -50,7 +50,7 @@ export const AppRouter: React.FC = () => {
       <Route path="/" element={<Navigate to="/login" replace />} />
       
       {/* Public routes */}
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<LoginWorking />} />
       <Route
         path="/register"
         element={
