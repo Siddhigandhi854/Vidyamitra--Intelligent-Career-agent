@@ -3,11 +3,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContextSimple";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MainLayout } from "../components/MainLayout";
-import { Login } from "../pages/Auth/Login";
+import { LoginBasic } from "../pages/Auth/LoginBasic";
 import { Register } from "../pages/Auth/Register";
 import { TestAuth } from "../pages/Auth/TestAuth";
 import { TestUI } from "../pages/TestUI";
-import { DashboardSimple } from "../pages/Dashboard/DashboardSimple";
+import { DashboardBasic } from "../pages/Dashboard/DashboardBasic";
 import { ResumeUploadModern } from "../pages/Resume/ResumeUploadModern";
 import { JobRoles } from "../pages/Jobs/JobRoles";
 import { TrainingPlan } from "../pages/Training/TrainingPlan";
@@ -54,7 +54,7 @@ export const AppRouter: React.FC = () => {
         path="/login"
         element={
           <PublicRoute>
-            <Login />
+            <LoginBasic />
           </PublicRoute>
         }
       />
@@ -78,7 +78,7 @@ export const AppRouter: React.FC = () => {
           </RequireAuth>
         }
       >
-        <Route path="dashboard" element={<DashboardSimple />} />
+        <Route path="dashboard" element={<DashboardBasic />} />
         <Route path="resume" element={<ResumeUploadModern />} />
         <Route path="roles" element={<JobRoles />} />
         <Route path="training" element={<TrainingPlan />} />
