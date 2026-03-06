@@ -3,12 +3,15 @@ import json
 import openai
 from typing import List, Dict, Optional
 from app.settings import settings
+import time
 
 class JobService:
     def __init__(self):
         self.google_api_key = settings.google_api_key
         self.google_cse_id = settings.google_cse_id
         self.openai_api_key = settings.openai_api_key
+        self._cache: dict = {}
+        self._cache_ttl_seconds = 300
         
         # Initialize OpenAI client if available
         self.openai_client = None
@@ -20,9 +23,18 @@ class JobService:
         
     def search_jobs_with_google(self, query: str, location: Optional[str] = None, limit: int = 10) -> List[Dict]:
         """Search for real jobs using Google Custom Search API"""
+        # Simple in-memory cache to speed up repeated queries
+        cache_key = (query.lower().strip(), (location or "").lower().strip(), int(limit))
+        now = time.time()
+        cached = self._cache.get(cache_key)
+        if cached and (now - cached["ts"] <= self._cache_ttl_seconds):
+            return cached["data"]
+        
         if not self.google_api_key or not self.google_cse_id:
             print("Google API not configured, using enhanced fallback")
-            return self._get_enhanced_fallback_jobs(query, location, limit)
+            data = self._get_enhanced_fallback_jobs(query, location, limit)
+            self._cache[cache_key] = {"ts": now, "data": data}
+            return data
         
         try:
             # Construct search query for job listings
@@ -65,14 +77,19 @@ class JobService:
                 if self.openai_client:
                     jobs = self.enhance_with_ai(jobs, query)
                 
+                self._cache[cache_key] = {"ts": now, "data": jobs}
                 return jobs
             else:
                 print(f"Google Search API error: {response.status_code} - {response.text}")
-                return self._get_enhanced_fallback_jobs(query, location, limit)
+                data = self._get_enhanced_fallback_jobs(query, location, limit)
+                self._cache[cache_key] = {"ts": now, "data": data}
+                return data
                 
         except Exception as e:
             print(f"Job search error: {e}")
-            return self._get_enhanced_fallback_jobs(query, location, limit)
+            data = self._get_enhanced_fallback_jobs(query, location, limit)
+            self._cache[cache_key] = {"ts": now, "data": data}
+            return data
     
     def enhance_with_ai(self, jobs: List[Dict], keywords: str) -> List[Dict]:
         """Enhance job listings with OpenAI AI analysis"""

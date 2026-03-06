@@ -1,0 +1,27 @@
+# This file shows what should be in your .env file
+# Please copy this content to your actual .env file
+
+# Supabase Configuration (REQUIRED for login to work)
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_KEY=your-supabase-anon-key-here
+
+# JWT Secret (REQUIRED for token generation)
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+
+# Optional API Keys
+OPENAI_API_KEY=your-openai-key-here
+GOOGLE_API_KEY=your-google-key-here
+GEMINI_API_KEY=AIzaSyAX_bSLnkVvSMhesBbSLG968h2cwFakXY
+GOOGLE_CSE_ID=your-google-cse-id-here
+YOUTUBE_API_KEY=your-youtube-key-here
+PEXELS_API_KEY=your-pexels-key-here
+NEWS_API_KEY=your-news-key-here
+EXCHANGE_API_KEY=your-exchange-key-here
+
+# Instructions:
+# 1. Go to https://supabase.com
+# 2. Create a new project
+# 3. Get your Project URL and anon key from Settings > API
+# 4. Replace the values above
+# 5. Save this as .env in the backend folder
+# 6. Restart your backend server
