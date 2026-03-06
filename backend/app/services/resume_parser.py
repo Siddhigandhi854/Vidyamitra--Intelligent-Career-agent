@@ -39,37 +39,43 @@ class ResumeParser:
     def ai_enhanced_analysis(self, text: str) -> Dict:
         """Use Gemini to enhance resume analysis"""
         try:
-            prompt = f"""
-            Analyze this resume text and provide detailed insights:
-            
-            {text[:2000]}
-            
-            Return a JSON response with this exact format:
-            {{
-                "enhanced_skills": ["skill1", "skill2", "skill3"],
-                "experience_level": "Entry/Mid/Senior/Executive",
-                "strengths": ["strength1", "strength2", "strength3"],
-                "improvements": ["improvement1", "improvement2", "improvement3"],
-                "recommended_roles": ["role1", "role2", "role3"],
-                "ai_score": 85
-            }}
-            
-            Be professional and constructive in your analysis.
-            """
-            
-            from app.services.gemini_service import gemini_service
-            response = gemini_service.generate_content(prompt, temperature=0.3, max_tokens=1000)
-            
-            if response:
-                import json
-                return json.loads(response)
-            
-            # Fallback to basic analysis
-            return self._basic_resume_analysis(text)
+            # Try to use Gemini API
+            import google.generativeai as genai
+            try:
+                model = genai.GenerativeModel('gemini-pro')
+                genai.configure(api_key="AIzaSyAX_bSLnkVvSMhesBbSLG968h2cwFakXY")
+                
+                prompt = f"""
+                Analyze this resume text and provide detailed insights:
+                
+                {text[:2000]}
+                
+                Return a JSON response with this exact format:
+                {{
+                    "enhanced_skills": ["skill1", "skill2", "skill3"],
+                    "experience_level": "Entry/Mid/Senior/Executive",
+                    "strengths": ["strength1", "strength2", "strength3"],
+                    "improvements": ["improvement1", "improvement2"],
+                    "career_path": "Recommended career path"
+                }}
+                """
+                
+                response = model.generate_content(prompt)
+                ai_analysis = response.text
+                print(f"✅ Gemini analysis completed")
+                return {"analysis": ai_analysis, "source": "gemini"}
+                
+            except Exception as e:
+                print(f"❌ Gemini API error: {e}")
+                return {"error": f"Gemini API error: {str(e)}", "source": "gemini"}
+                
+        except ImportError as e:
+            print(f"⚠️ Gemini not available: {e}")
+            return {"error": f"Gemini not available: {str(e)}", "source": "gemini"}
             
         except Exception as e:
-            print(f"Gemini resume analysis failed: {e}")
-            return self._basic_resume_analysis(text)
+            print(f"❌ AI analysis failed: {e}")
+            return {"error": str(e), "source": "unknown"}
     
     def _basic_resume_analysis(self, text: str) -> Dict:
         """Basic resume analysis fallback"""
@@ -220,54 +226,56 @@ class ResumeParser:
         
         return min(score, 100)  # Cap at 100
 
-    def parse_resume(self, content_bytes: bytes, filename: str) -> Dict:
-        """Main resume parsing function"""
-        text = self.extract_text(content_bytes)
-        
-        if not text or len(text.strip()) < 50:
+    def parse_resume(self, content_bytes: bytes, filename: str) -> dict:
+        """Enhanced resume parser with Gemini AI analysis"""
+        try:
+            # Convert bytes to string
+            content = content_bytes.decode('utf-8', errors='ignore')
+            
+            # Basic text extraction
+            text_preview = content[:500] + "..." if len(content) > 500 else content
+            
+            # Extract skills (simple keyword matching)
+            skills = self._extract_skills(content)
+            
+            # Detect role (simple keyword matching)
+            detected_role = self._detect_role(content)
+            
+            # Calculate score (based on skills and experience)
+            score = self._calculate_score(skills, content)
+            
+            # Try AI enhancement (optional)
+            ai_analysis = None
+            try:
+                if self.openai_client:
+                    ai_analysis = self.ai_enhanced_analysis(content)
+                    print(f"✅ AI analysis completed for {filename}")
+                else:
+                    print(f"⚠️ OpenAI client not available, skipping AI analysis")
+            except Exception as e:
+                print(f"❌ AI analysis failed: {e}")
+                ai_analysis = {"error": str(e)}
+            
+            print(f"📄 Resume parsed: {filename}, Role: {detected_role}, Score: {score}")
+            
             return {
                 "filename": filename,
-                "text_preview": "Unable to extract meaningful content from resume.",
+                "text_preview": text_preview,
+                "detected_role": detected_role,
+                "skills": skills,
+                "score": score,
+                "ai_analysis": ai_analysis
+            }
+        except Exception as e:
+            print(f"❌ Resume parsing failed: {e}")
+            return {
+                "filename": filename,
+                "text_preview": "Error parsing resume",
                 "detected_role": "Unknown",
                 "skills": [],
                 "score": 0,
-                "ai_analysis": None
+                "ai_analysis": {"error": str(e)}
             }
-        
-        # Extract basic information
-        skills = self.extract_skills(text)
-        detected_role = self.detect_role(text)
-        score = self.calculate_score(text, skills, detected_role)
-        
-        # Try to get AI-enhanced analysis
-        ai_analysis = self.ai_enhanced_analysis(text)
-        
-        # If AI analysis is available, merge the insights
-        if ai_analysis:
-            # Combine traditional skills with AI-detected skills
-            enhanced_skills = list(set(skills + ai_analysis.get("enhanced_skills", [])))
-            
-            # Use AI score if available and higher confidence
-            final_score = max(score, ai_analysis.get("ai_score", score))
-            
-            return {
-                "filename": filename,
-                "text_preview": text[:500] + "..." if len(text) > 500 else text,
-                "detected_role": detected_role,
-                "skills": enhanced_skills,
-                "score": final_score,
-                "ai_analysis": ai_analysis
-            }
-        
-        # Fallback to traditional analysis
-        return {
-            "filename": filename,
-            "text_preview": text[:500] + "..." if len(text) > 500 else text,
-            "detected_role": detected_role,
-            "skills": skills,
-            "score": score,
-            "ai_analysis": None
-        }
 
 # Global parser instance
 resume_parser = ResumeParser()
