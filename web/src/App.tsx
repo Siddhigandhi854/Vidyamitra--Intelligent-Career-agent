@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRouter } from './router';
-import { AuthProvider } from './contexts/AuthContextFixed';
+import { AuthProvider } from './contexts/AuthContextSimple';
 import { Notification } from './components/ui';
 import './styles.css';
 
